@@ -141,16 +141,51 @@ def main():
     # OPTIONAL: update favorites by filtering today+finals for team names
     favs = []
     fav_map = data.get("favoritesTeams", {})
-    for league_key, team_list in fav_map.items():
-        # Look in today's games first, then finals
-        candidates = (data.get("today", []) + data.get("finals", []))
-        for t in team_list:
-            hit = next((it for it in candidates
-                        if it.get("league") == league_key and t.lower() in it.get("text", "").lower()), None)
-            if hit:
-                favs.append(hit)
-            else:
-                favs.append({"league": league_key, "text": f"{t} — no item today"})
+    def text_has_team(text: str, team: str) -> bool:
+    """
+    Match short labels cleanly:
+    - Lions
+    - Tigers
+    - Red Wings
+    - Notre Dame
+    - Indiana
+    """
+    t = team.lower()
+    s = text.lower()
+
+    # exact word match where possible
+    if f" {t} " in f" {s} ":
+        return True
+
+    # allow @ or — separators (common in ticker text)
+    if s.startswith(f"{t} ") or f" {t}@" in s or f" {t} —" in s:
+        return True
+
+    return False
+
+
+favs = []
+fav_map = data.get("favoritesTeams", {})
+candidates = (data.get("today", []) + data.get("finals", []))
+
+for league_key, team_list in fav_map.items():
+    for team in team_list:
+        hit = next(
+            (
+                it for it in candidates
+                if it.get("league") == league_key
+                and text_has_team(it.get("text", ""), team)
+            ),
+            None
+        )
+
+        if hit:
+            favs.append(hit)
+        else:
+            favs.append({
+                "league": league_key,
+                "text": f"{team} — no game/result today"
+            })
 
     if favs:
         data["favorites"] = favs[:50]
