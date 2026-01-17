@@ -17,6 +17,13 @@
       "Indiana"
     ]
   },
+  "favoriteLogos": {
+  "Lions": "https://a.espncdn.com/i/teamlogos/nfl/500/det.png",
+  "Red Wings": "https://a.espncdn.com/i/teamlogos/nhl/500/det.png",
+  "Tigers": "https://a.espncdn.com/i/teamlogos/mlb/500/det.png",
+  "Notre Dame": "https://a.espncdn.com/i/teamlogos/ncaa/500/87.png",
+  "Indiana": "https://a.espncdn.com/i/teamlogos/ncaa/500/84.png"
+},
   "favorites": [
     {
       "league": "NFL",
