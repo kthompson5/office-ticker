@@ -1,28 +1,19 @@
 {
-  "statusLine": "NFL • NCAA FB • MLB • NHL — schedule / finals / standings",
+  "statusLine": "NFL • NCAA FB • MLB • NHL — auto-updated",
   "maxItemsPerMode": 18,
   "scrollSpeed": "55s",
 
   "favoritesTeams": {
-    "NFL": ["Detroit Lions"],
-    "NHL": ["Detroit Red Wings"],
-    "MLB": ["Detroit Tigers"],
+    "NFL": ["Lions"],
+    "NHL": ["Red Wings"],
+    "MLB": ["Tigers"],
     "NCAA": ["Notre Dame", "Indiana"]
   },
 
-  "favorites": [
-    { "league": "NFL", "text": "Lions — NEXT: TBD" },
-    { "league": "NCAA", "text": "Notre Dame — NEXT: TBD" },
-    { "league": "NHL", "text": "Red Wings — NEXT: TBD" },
-    { "league": "MLB", "text": "Tigers — NEXT: TBD" }
-  ],
+  "favorites": [],
 
-  "today": [
-    { "league": "NFL", "text": "Lions @ Packers 7:15 PM ET" }
-  ],
-  "finals": [
-    { "league": "NFL", "text": "FINAL: Lions 27 — Vikings 20" }
-  ],
+  "today": [],
+  "finals": [],
   "standings": [
     { "league": "NFL", "text": "NFC North: DET 9-3 | GB 7-5 | MIN 6-6 | CHI 4-8" }
   ]
