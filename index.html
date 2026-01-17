@@ -159,10 +159,11 @@
   const MODE_ROTATE_MS = 60 * 1000;      // rotate modes every 60 seconds
 
   const modes = [
-    { key: "today",   pill: "TODAY",   status: "Today’s schedule" },
-    { key: "finals",  pill: "FINALS",  status: "Most recent finals" },
-    { key: "standings", pill: "STAND", status: "Standings snapshot" },
-  ];
+  { key: "favorites", pill: "FAVS",   status: "Your teams" },
+  { key: "today",     pill: "TODAY",  status: "Today’s schedule" },
+  { key: "finals",    pill: "FINALS", status: "Most recent finals" },
+  { key: "standings", pill: "STAND",  status: "Standings snapshot" },
+];
 
   let allData = null;
   let modeIndex = 0;
