@@ -201,7 +201,36 @@ def main():
             else:
                 favs.append({"league": league_key, "text": f"{team} — no game/result today"})
 
-    data["favorites"] = favs[:60]
+    # Favorites (with optional team logos)
+fav_map = data.get("favoritesTeams", {})
+fav_logos = data.get("favoriteLogos", {})  # NEW
+candidates = (data.get("today", []) + data.get("finals", []))
+
+favs = []
+
+for league_key, teams in fav_map.items():
+    for team in teams:
+        hit = next(
+            (it for it in candidates
+             if it.get("league") == league_key and text_has_team(it.get("text", ""), team)),
+            None
+        )
+
+        if hit:
+            # Copy the item so we can safely add logo without mutating shared objects
+            item = {"league": hit.get("league", league_key), "text": hit.get("text", "")}
+        else:
+            item = {"league": league_key, "text": f"{team} — no game/result today"}
+
+        # Attach logo for this favorite team if we have one
+        logo_url = fav_logos.get(team)
+        if logo_url:
+            item["logo"] = logo_url
+
+        favs.append(item)
+
+data["favorites"] = favs[:60]
+
 
     # Stamp status
     data["statusLine"] = "NFL • NCAA FB • MLB • NHL — auto-updated"
