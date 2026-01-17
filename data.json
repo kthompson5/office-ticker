@@ -1,0 +1,21 @@
+{
+  "statusLine": "NFL • NCAA FB • MLB • NHL — schedule / finals / standings",
+  "maxItemsPerMode": 18,
+  "scrollSpeed": "55s",
+  "today": [
+    { "league": "NFL", "text": "Lions @ Packers 7:15 PM ET" },
+    { "league": "NCAA", "text": "Notre Dame vs USC Sat 6:30 PM ET" },
+    { "league": "NHL", "text": "Red Wings @ Blackhawks 8:00 PM ET" },
+    { "league": "MLB", "text": "Tigers @ Royals 1:10 PM ET" }
+  ],
+  "finals": [
+    { "league": "NFL", "text": "FINAL: Lions 27 — Vikings 20" },
+    { "league": "NHL", "text": "FINAL: Red Wings 4 — Blues 2" },
+    { "league": "MLB", "text": "FINAL: Tigers 5 — Guardians 3" }
+  ],
+  "standings": [
+    { "league": "NFL", "text": "NFC North: DET 9-3 | GB 7-5 | MIN 6-6 | CHI 4-8" },
+    { "league": "NHL", "text": "Atlantic: BOS 58 | FLA 54 | TOR 52 | DET 49" },
+    { "league": "MLB", "text": "AL Central: CLE 62 | MIN 59 | DET 57 | KC 51" }
+  ]
+}
