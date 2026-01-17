@@ -47,7 +47,18 @@ def build_items(scoreboard: dict, league_label: str, mode: str) -> list[dict]:
         comp = comps[0] if comps else {}
         status = (comp.get("status") or {}).get("type") or {}
         state = (status.get("state") or "").lower()  # pre / in / post
-
+        # Strict "today" filter using local (CT) calendar date
+if mode == "today":
+    iso = comp.get("date")
+    if not iso:
+        continue
+    try:
+        dt_utc = datetime.fromisoformat(iso.replace("Z", "+00:00"))
+        dt_ct = dt_utc + timedelta(hours=-6)
+        if dt_ct.date() != datetime.now(timezone.utc).date():
+            continue
+    except Exception:
+        continue
         if mode == "finals" and state != "post":
             continue
         if mode == "today" and state == "post":
@@ -78,8 +89,8 @@ def build_items(scoreboard: dict, league_label: str, mode: str) -> list[dict]:
         if iso:
             try:
                 dt_utc = datetime.fromisoformat(iso.replace("Z", "+00:00"))
-                dt_et = dt_utc + timedelta(hours=-5)
-                time_part = dt_et.strftime("%-I:%M %p ET")
+                dt_et = dt_utc + timedelta(hours=-6)
+                time_part = dt_et.strftime("%-I:%M %p CT")
             except Exception:
                 time_part = ""
 
