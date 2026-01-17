@@ -184,22 +184,38 @@ def main():
     else:
         print("No FINALS items found across leagues; keeping existing data['finals'].")
 
-    # Favorites
-    favs = []
-    fav_map = data.get("favoritesTeams", {})
-    candidates = (data.get("today", []) + data.get("finals", []))
+   # Favorites (with optional team logos)
+fav_map = data.get("favoritesTeams", {})
+fav_logos = data.get("favoriteLogos", {})  # NEW
+candidates = (data.get("today", []) + data.get("finals", []))
 
-    for league_key, teams in fav_map.items():
-        for team in teams:
-            hit = next(
-                (it for it in candidates
-                 if it.get("league") == league_key and text_has_team(it.get("text", ""), team)),
-                None
-            )
-            if hit:
-                favs.append(hit)
-            else:
-                favs.append({"league": league_key, "text": f"{team} — no game/result today"})
+favs = []
+
+def text_has_team(text: str, team: str) -> bool:
+    t = team.lower()
+    s = (text or "").lower()
+    return f" {t} " in f" {s} " or s.startswith(f"{t} ")
+
+for league_key, teams in fav_map.items():
+    for team in teams:
+        hit = next(
+            (it for it in candidates
+             if it.get("league") == league_key and text_has_team(it.get("text", ""), team)),
+            None
+        )
+
+        if hit:
+            item = {"league": hit.get("league", league_key), "text": hit.get("text", "")}
+        else:
+            item = {"league": league_key, "text": f"{team} — no game/result today"}
+
+        logo_url = fav_logos.get(team)
+        if logo_url:
+            item["logo"] = logo_url
+
+        favs.append(item)
+
+data["favorites"] = favs[:60]
 
     # Favorites (with optional team logos)
 fav_map = data.get("favoritesTeams", {})
@@ -229,7 +245,7 @@ for league_key, teams in fav_map.items():
 
         favs.append(item)
 
-data["favorites"] = favs[:60]
+orites"] = favs[:60]
 
 
     # Stamp status
