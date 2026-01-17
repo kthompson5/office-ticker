@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Office Sports Ticker</title>
+  <style>
+    :root{
+      --bg:#000;
+      --fg:#fff;
+      --muted:#9aa0a6;
+      --accent:#00e676;
+      --strip-h: 22vh;          /* bottom ticker height */
+      --pad: 14px;
+      --speed: 55s;             /* scroll speed; lower = faster */
+      --font: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    }
+
+    html, body { height:100%; margin:0; background:var(--bg); color:var(--fg); font-family:var(--font); }
+    .screen {
+      height:100%;
+      display:flex;
+      flex-direction:column;
+      justify-content:flex-end;
+      overflow:hidden;
+    }
+
+    /* Optional “quiet” header area (kept subtle) */
+    .top {
+      flex: 1 1 auto;
+      display:flex;
+      align-items:flex-start;
+      justify-content:flex-end;
+      padding: 10px 14px;
+      color: var(--muted);
+      font-size: 14px;
+      letter-spacing: 0.3px;
+      user-select:none;
+    }
+    .badge {
+      border:1px solid rgba(255,255,255,0.15);
+      border-radius: 999px;
+      padding: 6px 10px;
+      background: rgba(255,255,255,0.06);
+    }
+    .dot { color: var(--accent); margin: 0 6px; }
+
+    /* Ticker strip */
+    .strip {
+      height: var(--strip-h);
+      border-top: 2px solid rgba(255,255,255,0.12);
+      background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      position:relative;
+    }
+
+    .strip-header {
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding: 8px var(--pad) 0 var(--pad);
+      user-select:none;
+    }
+    .pill {
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 6px 10px;
+      border-radius: 8px;
+      background: rgba(0,230,118,0.18);
+      border: 1px solid rgba(0,230,118,0.35);
+      color: var(--fg);
+      white-space:nowrap;
+    }
+    .status {
+      color: var(--muted);
+      font-size: 13px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+
+    .ticker-viewport {
+      width:100%;
+      overflow:hidden;
+      padding: 6px 0 12px 0;
+    }
+
+    /* The scrolling row */
+    .ticker-row {
+      display:inline-flex;
+      align-items:center;
+      gap: 26px;
+      white-space:nowrap;
+      padding-left: 100%; /* start off-screen */
+      animation: scroll var(--speed) linear infinite;
+      will-change: transform;
+      font-size: clamp(18px, 3.2vh, 28px);
+      line-height: 1.1;
+      font-weight: 650;
+      letter-spacing: 0.2px;
+    }
+
+    .item {
+      display:inline-flex;
+      align-items:baseline;
+      gap: 10px;
+    }
+    .label {
+      font-size: 0.65em;
+      font-weight: 800;
+      color: var(--accent);
+      letter-spacing: 0.8px;
+    }
+    .sep {
+      color: rgba(255,255,255,0.35);
+      font-weight: 400;
+    }
+
+    @keyframes scroll {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-100%); }
+    }
+
+    /* Nice on touch displays */
+    * { -webkit-tap-highlight-color: transparent; }
+
+    /* If you ever want “full ticker only”, set --strip-h: 100vh and hide .top */
+  </style>
+</head>
+<body>
+  <div class="screen">
+    <div class="top">
+      <div class="badge">
+        Office Ticker <span class="dot">•</span><span id="clock">--:--</span>
+      </div>
+    </div>
+
+    <div class="strip">
+      <div class="strip-header">
+        <div class="pill" id="modePill">SCORES</div>
+        <div class="status" id="statusText">Loading…</div>
+      </div>
+
+      <div class="ticker-viewport">
+        <div class="ticker-row" id="tickerRow" aria-label="sports ticker">
+          <!-- items injected here -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+  const DATA_URL = "./data.json";        // same folder
+  const REFRESH_MS = 15 * 60 * 1000;     // refresh data every 15 minutes
+  const MODE_ROTATE_MS = 60 * 1000;      // rotate modes every 60 seconds
+
+  const modes = [
+    { key: "today",   pill: "TODAY",   status: "Today’s schedule" },
+    { key: "finals",  pill: "FINALS",  status: "Most recent finals" },
+    { key: "standings", pill: "STAND", status: "Standings snapshot" },
+  ];
+
+  let allData = null;
+  let modeIndex = 0;
+
+  function setClock(){
+    const d = new Date();
+    const hh = String(d.getHours()).padStart(2,"0");
+    const mm = String(d.getMinutes()).padStart(2,"0");
+    document.getElementById("clock").textContent = `${hh}:${mm}`;
+  }
+  setClock();
+  setInterval(setClock, 10_000);
+
+  async function loadData(){
+    try {
+      const res = await fetch(DATA_URL, { cache: "no-store" });
+      if(!res.ok) throw new Error(`HTTP ${res.status}`);
+      allData = await res.json();
+      render();
+      document.getElementById("statusText").textContent = `Updated ${new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}`;
+    } catch (err) {
+      document.getElementById("statusText").textContent = `Could not load data.json (${err.message})`;
+    }
+  }
+
+  function escapeHtml(s){
+    return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+
+  function buildRow(items){
+    // Build enough content that the scroll feels continuous
+    const parts = [];
+    for (const it of items){
+      parts.push(
+        `<span class="item"><span class="label">${escapeHtml(it.league)}</span> ${escapeHtml(it.text)}</span>`
+      );
+      parts.push(`<span class="sep">•</span>`);
+    }
+    // Duplicate to help seamless looping
+    return parts.join("") + parts.join("");
+  }
+
+  function render(){
+    if(!allData) return;
+
+    const mode = modes[modeIndex % modes.length];
+    document.getElementById("modePill").textContent = mode.pill;
+
+    const items = (allData[mode.key] || []).slice(0, allData.maxItemsPerMode || 20);
+    const status = allData.statusLine || mode.status;
+
+    document.getElementById("statusText").textContent = status;
+
+    const row = document.getElementById("tickerRow");
+    row.style.setProperty("--speed", allData.scrollSpeed || "55s");
+    row.innerHTML = buildRow(items);
+
+    // restart animation cleanly
+    row.style.animation = "none";
+    // force reflow
+    void row.offsetHeight;
+    row.style.animation = "";
+  }
+
+  // Rotate modes (Today → Finals → Standings)
+  setInterval(() => {
+    modeIndex++;
+    render();
+  }, MODE_ROTATE_MS);
+
+  // Refresh data periodically
+  setInterval(loadData, REFRESH_MS);
+
+  // Initial
+  loadData();
+</script>
+</body>
+</html>
