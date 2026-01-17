@@ -207,26 +207,32 @@
   }
 
   function render(){
-    if(!allData) return;
+  if(!allData) return;
 
-    const mode = modes[modeIndex % modes.length];
-    document.getElementById("modePill").textContent = mode.pill;
+  const mode = modes[modeIndex % modes.length];
+  document.getElementById("modePill").textContent = mode.pill;
 
-    const items = (allData[mode.key] || []).slice(0, allData.maxItemsPerMode || 20);
-    const status = allData.statusLine || mode.status;
+  let items = (allData[mode.key] || []).slice(0, allData.maxItemsPerMode || 20);
 
-    document.getElementById("statusText").textContent = status;
-
-    const row = document.getElementById("tickerRow");
-    row.style.setProperty("--speed", allData.scrollSpeed || "55s");
-    row.innerHTML = buildRow(items);
-
-    // restart animation cleanly
-    row.style.animation = "none";
-    // force reflow
-    void row.offsetHeight;
-    row.style.animation = "";
+  // If the current mode is empty, show a friendly placeholder so the ticker still scrolls.
+  if (!items.length) {
+    items = [
+      { league: "SYS", text: "Waiting for updated sports data… (refreshing automatically)" }
+    ];
   }
+
+  const status = allData.statusLine || mode.status;
+  document.getElementById("statusText").textContent = status;
+
+  const row = document.getElementById("tickerRow");
+  row.style.setProperty("--speed", allData.scrollSpeed || "55s");
+  row.innerHTML = buildRow(items);
+
+  // restart animation cleanly
+  row.style.animation = "none";
+  void row.offsetHeight;
+  row.style.animation = "";
+}
 
   // Rotate modes (Today → Finals → Standings)
   setInterval(() => {
