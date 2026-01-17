@@ -2,19 +2,195 @@
   "statusLine": "NFL • NCAA FB • MLB • NHL — auto-updated",
   "maxItemsPerMode": 18,
   "scrollSpeed": "55s",
-
   "favoritesTeams": {
-    "NFL": ["Lions"],
-    "NHL": ["Red Wings"],
-    "MLB": ["Tigers"],
-    "NCAA": ["Notre Dame", "Indiana"]
+    "NFL": [
+      "Lions"
+    ],
+    "NHL": [
+      "Red Wings"
+    ],
+    "MLB": [
+      "Tigers"
+    ],
+    "NCAA": [
+      "Notre Dame",
+      "Indiana"
+    ]
   },
-
-  "favorites": [],
-
-  "today": [],
-  "finals": [],
+  "favorites": [
+    {
+      "league": "NFL",
+      "text": "Lions — no game/result today"
+    },
+    {
+      "league": "NHL",
+      "text": "FINAL: Sharks 2 — Red Wings 4"
+    },
+    {
+      "league": "MLB",
+      "text": "Tigers — no game/result today"
+    },
+    {
+      "league": "NCAA",
+      "text": "Notre Dame — no game/result today"
+    },
+    {
+      "league": "NCAA",
+      "text": "Miami @ Indiana 7:30 PM ET"
+    }
+  ],
+  "today": [
+    {
+      "league": "NFL",
+      "text": "Bills @ Broncos 4:30 PM ET"
+    },
+    {
+      "league": "NFL",
+      "text": "49ers @ Seahawks 8:00 PM ET"
+    },
+    {
+      "league": "NHL",
+      "text": "LIVE: Lightning 2 — Blues 2"
+    },
+    {
+      "league": "NHL",
+      "text": "LIVE: Predators 2 — Avalanche 2"
+    },
+    {
+      "league": "NHL",
+      "text": "Ducks @ Kings 10:30 PM ET"
+    },
+    {
+      "league": "NHL",
+      "text": "Wild @ Sabres 12:30 PM ET"
+    },
+    {
+      "league": "NHL",
+      "text": "Rangers @ Flyers 1:00 PM ET"
+    },
+    {
+      "league": "NHL",
+      "text": "Islanders @ Flames 3:00 PM ET"
+    },
+    {
+      "league": "NHL",
+      "text": "Kraken @ Mammoth 5:00 PM ET"
+    },
+    {
+      "league": "NHL",
+      "text": "Canadiens @ Senators 7:00 PM ET"
+    },
+    {
+      "league": "NHL",
+      "text": "Hurricanes @ Devils 7:00 PM ET"
+    },
+    {
+      "league": "NHL",
+      "text": "Blue Jackets @ Penguins 7:00 PM ET"
+    },
+    {
+      "league": "NHL",
+      "text": "Panthers @ Capitals 7:00 PM ET"
+    },
+    {
+      "league": "NHL",
+      "text": "Maple Leafs @ Jets 7:00 PM ET"
+    },
+    {
+      "league": "NHL",
+      "text": "Bruins @ Blackhawks 8:00 PM ET"
+    },
+    {
+      "league": "NHL",
+      "text": "Oilers @ Canucks 10:00 PM ET"
+    },
+    {
+      "league": "NHL",
+      "text": "Predators @ Golden Knights 10:00 PM ET"
+    },
+    {
+      "league": "NHL",
+      "text": "Kings @ Ducks 10:00 PM ET"
+    },
+    {
+      "league": "MLB",
+      "text": "Yankees @ Orioles 1:05 PM ET"
+    },
+    {
+      "league": "MLB",
+      "text": "White Sox @ Cubs 3:05 PM ET"
+    },
+    {
+      "league": "MLB",
+      "text": "Royals @ Rangers 3:05 PM ET"
+    },
+    {
+      "league": "MLB",
+      "text": "Diamondbacks @ Rockies 3:10 PM ET"
+    },
+    {
+      "league": "MLB",
+      "text": "Padres @ Mariners 3:10 PM ET"
+    },
+    {
+      "league": "NCAA",
+      "text": "Miami @ Indiana 7:30 PM ET"
+    }
+  ],
+  "finals": [
+    {
+      "league": "NHL",
+      "text": "FINAL: Canadiens 3 — Sabres 5"
+    },
+    {
+      "league": "NHL",
+      "text": "FINAL: Flyers 3 — Penguins 6"
+    },
+    {
+      "league": "NHL",
+      "text": "FINAL: Sharks 3 — Capitals 2"
+    },
+    {
+      "league": "NHL",
+      "text": "FINAL: Canucks 1 — Blue Jackets 4"
+    },
+    {
+      "league": "NHL",
+      "text": "FINAL: Kraken 2 — Bruins 4"
+    },
+    {
+      "league": "NHL",
+      "text": "FINAL: Jets 6 — Wild 2"
+    },
+    {
+      "league": "NHL",
+      "text": "FINAL: Flames 3 — Blackhawks 1"
+    },
+    {
+      "league": "NHL",
+      "text": "FINAL: Stars 1 — Mammoth 2"
+    },
+    {
+      "league": "NHL",
+      "text": "FINAL: Islanders 1 — Oilers 0"
+    },
+    {
+      "league": "NHL",
+      "text": "FINAL: Maple Leafs 5 — Golden Knights 6"
+    },
+    {
+      "league": "NHL",
+      "text": "FINAL: Sharks 2 — Red Wings 4"
+    },
+    {
+      "league": "NHL",
+      "text": "FINAL: Panthers 1 — Hurricanes 9"
+    }
+  ],
   "standings": [
-    { "league": "NFL", "text": "NFC North: DET 9-3 | GB 7-5 | MIN 6-6 | CHI 4-8" }
+    {
+      "league": "NFL",
+      "text": "NFC North: DET 9-3 | GB 7-5 | MIN 6-6 | CHI 4-8"
+    }
   ]
 }
