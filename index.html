@@ -16,6 +16,14 @@
       --font: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
     }
 
+.logo {
+  height: 28px;
+  width: auto;
+  margin-right: 10px;
+  vertical-align: middle;
+  border-radius: 6px;
+}
+
     html, body { height:100%; margin:0; background:var(--bg); color:var(--fg); font-family:var(--font); }
     .screen {
       height:100%;
@@ -195,17 +203,19 @@
   }
 
   function buildRow(items){
-    // Build enough content that the scroll feels continuous
-    const parts = [];
-    for (const it of items){
-      parts.push(
-        `<span class="item"><span class="label">${escapeHtml(it.league)}</span> ${escapeHtml(it.text)}</span>`
-      );
-      parts.push(`<span class="sep">•</span>`);
-    }
-    // Duplicate to help seamless looping
-    return parts.join("") + parts.join("");
+  const parts = [];
+  for (const it of items){
+    const logoHtml = it.logo
+      ? `<img class="logo" src="${escapeHtml(it.logo)}" alt="" loading="lazy" referrerpolicy="no-referrer">`
+      : "";
+
+    parts.push(
+      `<span class="item">${logoHtml}<span class="label">${escapeHtml(it.league)}</span> ${escapeHtml(it.text)}</span>`
+    );
+    parts.push(`<span class="sep">•</span>`);
   }
+  return parts.join("") + parts.join("");
+}
 
   function render(){
   if(!allData) return;
