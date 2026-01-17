@@ -159,11 +159,12 @@
   const MODE_ROTATE_MS = 60 * 1000;      // rotate modes every 60 seconds
 
   const modes = [
-  { key: "favorites", pill: "FAVS",   status: "Your teams" },
-  { key: "today",     pill: "TODAY",  status: "Today’s schedule" },
-  { key: "finals",    pill: "FINALS", status: "Most recent finals" },
-  { key: "standings", pill: "STAND",  status: "Standings snapshot" },
+  { key: "favorites", pill: "FAVS",   status: "Your teams",          speed: "70s" },
+  { key: "today",     pill: "TODAY",  status: "Today’s schedule",    speed: "95s" },
+  { key: "finals",    pill: "FINALS", status: "Recent finals",       speed: "65s" },
+  { key: "standings", pill: "STAND",  status: "Standings snapshot",  speed: "80s" }
 ];
+
 
   let allData = null;
   let modeIndex = 0;
@@ -225,7 +226,7 @@
   document.getElementById("statusText").textContent = status;
 
   const row = document.getElementById("tickerRow");
-  row.style.setProperty("--speed", allData.scrollSpeed || "55s");
+  row.style.setProperty("--speed", mode.speed || allData.scrollSpeed || "55s");
   row.innerHTML = buildRow(items);
 
   // restart animation cleanly
